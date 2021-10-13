@@ -11,13 +11,8 @@ const Main: FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [id, setId] = useState<number>(0);
   //napravi constuctor za usera zbog key-a;
-  const onChangePage = () => {
-    if (page === 1) {
-      setPage(2);
-    }
-    if (page === 2) {
-      setPage(1);
-    }
+  const onChangePage = (page:number) => {
+    setPage(page);
   };
   const columns = [
     {
@@ -75,6 +70,7 @@ const Main: FC = () => {
     users.then((res: any) => {
       let tempUsers: Array<object> = [];
       if (res.status === 200) {
+        console.log(res)
         setTotal(res.data.total);
         setLoading(false);
         res.data.data.forEach((user: any, i: number) => {
@@ -104,7 +100,7 @@ const Main: FC = () => {
         bordered
       />
       {!loading && (
-        <Pagination total={total} current={page} onChange={onChangePage} />
+        <Pagination total={total} current={page} onChange={(page)=>{onChangePage(page)}} defaultCurrent={1}/>
       )}
     </main>
   );
