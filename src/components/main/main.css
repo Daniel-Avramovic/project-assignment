@@ -1,0 +1,8 @@
+.flex{
+    display: flex;
+    justify-content: space-between;
+}
+.container{
+    width: 90%;
+    margin: 0 auto;
+}
