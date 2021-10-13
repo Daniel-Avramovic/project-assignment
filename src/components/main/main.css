@@ -4,5 +4,14 @@
 }
 .container{
     width: 90%;
-    margin: 0 auto;
+    margin: 15px auto;
+}
+table{
+    margin-bottom: 10px;
+}
+td, th{
+    font-size: 20px;
+}
+img{
+    border-radius: 50%;
 }

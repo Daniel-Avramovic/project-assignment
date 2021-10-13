@@ -1,10 +1,11 @@
 import React from 'react';
+import './footer.css'
 
 const Footer = () =>{
     return(
-        <header>
-            Will be footer here!!
-        </header>
+        <footer>
+            © 2021 Copyrigt Daniel Avramovic
+        </footer>
     )
 };
 
