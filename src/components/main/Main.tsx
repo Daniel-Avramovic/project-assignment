@@ -1,12 +1,12 @@
 import React, { FC, useEffect } from "react";
 import { getUsers } from "../../services/getUsers";
 import { Table, Pagination } from "antd";
-import "./main.css";
 import { User } from "../../entities/user";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../state/comabineActions";
 import { RootState } from "../../state/reducers/combineReducer";
+import "./main.css";
 
 const Main: FC = () => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const Main: FC = () => {
       title: "Show Email",
       render: (e: any) => {
         return (
-          <div className="flex" key={e.id}>
+          <div key={e.id}>
             <a href={`mailto:${e.email}`}>{e.email}</a>
           </div>
         );
