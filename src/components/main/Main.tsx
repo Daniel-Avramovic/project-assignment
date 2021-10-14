@@ -3,15 +3,20 @@ import { getUsers } from "../../services/getUsers";
 import { Table, Pagination } from "antd";
 import "./main.css";
 import { User } from "../../entities/user";
-import { useSelector, useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../state/comabineActions';
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../state/comabineActions";
 import { RootState } from "../../state/reducers/combineReducer";
 
 const Main: FC = () => {
   const dispatch = useDispatch();
-  const { isLoading, page, users, total} = useSelector((state: RootState)=>state.users);
-  const { setLoading, setPage, setListOfUsers, setTotal } = bindActionCreators(actionCreators, dispatch);
+  const { isLoading, page, users, total } = useSelector(
+    (state: RootState) => state.usersReducer
+  );
+  const { setLoading, setPage, setListOfUsers, setTotal } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
   // console.log(load);
   const columns = [
     {
@@ -86,7 +91,12 @@ const Main: FC = () => {
         bordered
       />
       {!isLoading && (
-        <Pagination total={total} current={page} onChange={setPage} defaultCurrent={1}/>
+        <Pagination
+          total={total}
+          current={page}
+          onChange={setPage}
+          defaultCurrent={1}
+        />
       )}
     </main>
   );
