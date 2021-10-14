@@ -1,19 +1,23 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { getUsers } from "../../services/getUsers";
-import { Table, Pagination, Button } from "antd";
-import "./main.css";
+import { Table, Pagination } from "antd";
 import { User } from "../../entities/user";
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../state/comabineActions";
+import { RootState } from "../../state/reducers/combineReducer";
+import "./main.css";
 
 const Main: FC = () => {
-  const [listOfUsers, setListOdUsers] = useState<Array<object>>([]);
-  const [page, setPage] = useState<number>(1);
-  const [total, setTotal] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [id, setId] = useState<number>(0);
-  //napravi constuctor za usera zbog key-a;
-  const onChangePage = (page:number) => {
-    setPage(page);
-  };
+  const dispatch = useDispatch();
+  const { isLoading, page, users, total } = useSelector(
+    (state: RootState) => state.usersReducer
+  );
+  const { setLoading, setPage, setListOfUsers, setTotal } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+  // console.log(load);
   const columns = [
     {
       title: "#",
@@ -42,22 +46,9 @@ const Main: FC = () => {
     {
       title: "Show Email",
       render: (e: any) => {
-        let text: string = "Click to show email!!!";
         return (
-          <div className="flex" key={e.id}>
-            <div>{id === e.id ? e.email : text}</div>
-            <Button
-              type="primary"
-              onClick={() => {
-                if (id !== e.id) {
-                  setId(e.id);
-                } else {
-                  setId(0);
-                }
-              }}
-            >
-              Click Me
-            </Button>
+          <div key={e.id}>
+            <a href={`mailto:${e.email}`}>{e.email}</a>
           </div>
         );
       },
@@ -66,13 +57,12 @@ const Main: FC = () => {
     },
   ];
   useEffect(() => {
+    setLoading(true);
     const users = getUsers(page);
     users.then((res: any) => {
       let tempUsers: Array<object> = [];
       if (res.status === 200) {
-        console.log(res)
         setTotal(res.data.total);
-        setLoading(false);
         res.data.data.forEach((user: any, i: number) => {
           tempUsers.push(
             new User(
@@ -86,7 +76,8 @@ const Main: FC = () => {
           );
         });
       }
-      setListOdUsers(tempUsers);
+      setListOfUsers(tempUsers);
+      setLoading(false);
     });
   }, [page]);
 
@@ -94,13 +85,18 @@ const Main: FC = () => {
     <main className="container">
       <Table
         columns={columns}
-        dataSource={listOfUsers}
+        dataSource={users}
         pagination={false}
-        loading={loading}
+        loading={isLoading}
         bordered
       />
-      {!loading && (
-        <Pagination total={total} current={page} onChange={(page)=>{onChangePage(page)}} defaultCurrent={1}/>
+      {!isLoading && (
+        <Pagination
+          total={total}
+          current={page}
+          onChange={setPage}
+          defaultCurrent={1}
+        />
       )}
     </main>
   );

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './footer.css'
 
-const Footer = () =>{
+const Footer: FC = () =>{
     return(
         <footer>
             © 2021 Copyrigt Daniel Avramovic
