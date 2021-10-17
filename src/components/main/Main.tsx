@@ -1,10 +1,6 @@
 import React, { FC, useEffect } from "react";
-import { getUsers } from "../../services/getUsers";
 import { Table, Pagination } from "antd";
-import { User } from "../../entities/user";
 import { useSelector, useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../../state/comabineActions";
 import { RootState } from "../../state/reducers/combineReducer";
 import "./main.css";
 
@@ -13,11 +9,7 @@ const Main: FC = () => {
   const { isLoading, page, users, total } = useSelector(
     (state: RootState) => state.usersReducer
   );
-  const { setLoading, setPage, setListOfUsers, setTotal } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
-  // console.log(load);
+
   const columns = [
     {
       title: "#",
@@ -35,13 +27,13 @@ const Main: FC = () => {
     },
     {
       title: "Name",
-      dataIndex: "firstName",
-      key: "firstName",
+      dataIndex: "first_name",
+      key: "first_name",
     },
     {
       title: "Last Name",
-      dataIndex: "lastName",
-      key: "lastName",
+      dataIndex: "last_name",
+      key: "last_name",
     },
     {
       title: "Show Email",
@@ -57,28 +49,8 @@ const Main: FC = () => {
     },
   ];
   useEffect(() => {
-    setLoading(true);
-    const users = getUsers(page);
-    users.then((res: any) => {
-      let tempUsers: Array<object> = [];
-      if (res.status === 200) {
-        setTotal(res.data.total);
-        res.data.data.forEach((user: any, i: number) => {
-          tempUsers.push(
-            new User(
-              user.id,
-              user.first_name,
-              user.last_name,
-              user.email,
-              user.avatar,
-              i
-            )
-          );
-        });
-      }
-      setListOfUsers(tempUsers);
-      setLoading(false);
-    });
+    dispatch({type: 'USER_FETCH_REQUESTED', payload: {page}})
+    
   }, [page]);
 
   return (
@@ -94,7 +66,8 @@ const Main: FC = () => {
         <Pagination
           total={total}
           current={page}
-          onChange={setPage}
+          onChange={(page) => {
+            dispatch({type: 'SET_PAGE', payload: {page}})}}
           defaultCurrent={1}
         />
       )}

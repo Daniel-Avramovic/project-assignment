@@ -24,4 +24,3 @@ export const userReducer = (
   return state;
 };
 
-//setLoading, setPage, setListOfUsers, setTotal;
