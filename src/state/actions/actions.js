@@ -1,3 +1,5 @@
+
+
 export const setLoading = (ac) =>{
     return (dispatch) => {
         dispatch({
@@ -33,5 +35,4 @@ export const setTotal = (totalUsers) =>{
         })
     }
 };
-
 
