@@ -3,7 +3,7 @@ import './footer.css'
 
 const Footer: FC = () =>{
     return(
-        <footer>
+        <footer data-testid="footer">
             © 2021 Copyrigt Daniel Avramovic
         </footer>
     )
