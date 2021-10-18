@@ -3,7 +3,7 @@ import './header.css';
 
 const Header: FC = () =>{
     return(
-        <header>
+        <header data-testid="header" >
             Project Assingment
         </header>
     )
